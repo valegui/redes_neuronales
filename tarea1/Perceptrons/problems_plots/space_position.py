@@ -44,7 +44,9 @@ def classify_point_2d(x, y, a, b):
 
 def generate_points_classification_2d(curve, xlim=50, ylim=60, qty=100):
     """
-
+    generates an array of points (x, y) and an array of values 1. or 0. if the point
+    in the same index is above or below the line described by the slope-intercept
+    values in curve (classification)
     :param curve: array with slope-intercept values of the line equation
     :param xlim: limit for the values in the x axis
     :param ylim: limit for the values in the y axis
