@@ -5,9 +5,17 @@ class Perceptron:
     """
     Perceptron class
     """
-    def __init__(self, bias, weights):
-        self.bias = bias
-        self.weights = np.array(weights)
+    def __init__(self, bias=None, weights=None, learning_rate=0.1, n_inputs=2):
+        """
+        class constructor
+        :param bias: bias of the perceptron
+        :param weights: array of weights for the perceptron
+        :param learning_rate: learning rate
+        :param n_inputs: number of inputs
+        """
+        self.bias = bias if bias is not None else np.random.uniform(-2., 2.)
+        self.weights = weights if weights is not None else np.random.uniform(-2., 2., size=n_inputs)
+        self.lr = learning_rate
 
     def feed(self, x):
         """
@@ -20,7 +28,42 @@ class Perceptron:
             assert len(self.weights) == len(x)
             return 1. if sum(self.weights * np.array(x)) + self.bias > 0 else 0.
         except AssertionError:
+            print("feed: mismatched lengths")
             return -1.
+
+    def learn(self, point, desired):
+        """
+        trains the perceptron according to the point and its desired classification
+        :param point: point to train the perceptron
+        :param desired: desired output for point
+        :return: 1- difference with desired output.
+                 2- output obtained by feeding the perceptron
+        """
+        try:
+            assert len(point) == len(self.weights)
+            diff = desired - self.feed(point)
+            self.weights += self.lr * point * diff
+            self.bias += self.lr * diff
+            return diff, desired - diff
+        except AssertionError:
+            print("learn: mismatched lengths")
+
+    def learn_all(self, inputs, outputs):
+        """
+        given an input, trains the perpectron to learn to classify new points according to
+        the desired classifications
+        :param inputs: array of points to train the perceptron
+        :param outputs: array of desired classifications to train the perceptron
+        :return: 1- array of differences between desired and real outputs
+                 2- array of classifications given by the perceptron
+        """
+        precision = np.array([])
+        classification = np.array([])
+        for ins, outs in zip(inputs, outputs):
+            pres, clas = self.learn(ins, outs)
+            precision = np.append(precision, pres)
+            classification = np.append(classification, clas)
+        return precision, classification
 
 
 class AndPerceptron(Perceptron):
