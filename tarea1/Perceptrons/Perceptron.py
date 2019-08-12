@@ -1,11 +1,12 @@
 import numpy as np
+from utils import *
 
 
 class Perceptron:
     """
     Perceptron class
     """
-    def __init__(self, bias=None, weights=None, learning_rate=0.1, n_inputs=2):
+    def __init__(self, bias=None, weights=None, activation=step, learning_rate=0.1, n_inputs=2):
         """
         class constructor
         :param bias: bias of the perceptron
@@ -16,17 +17,18 @@ class Perceptron:
         self.bias = bias if bias is not None else np.random.uniform(-2., 2.)
         self.weights = weights if weights is not None else np.random.uniform(-2., 2., size=n_inputs)
         self.lr = learning_rate
+        self.activation = activation
 
     def feed(self, x):
         """
         given a binary input array, computes the output of the perceptron
         according to its bias and weights
         :param x: binary input [array]
-        :return: binary output, -1 if error
+        :return: output of the perceptron
         """
         try:
             assert len(self.weights) == len(x)
-            return 1. if sum(self.weights * np.array(x)) + self.bias > 0 else 0.
+            return self.activation(np.array(x), self.weights, self.bias)
         except AssertionError:
             print("feed: mismatched lengths")
             return -1.

@@ -1,6 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from Perceptron import Perceptron
+from utils import *
 
 
 def generate_points_2d(xlim=50, ylim=60, qty=100):
@@ -112,7 +111,7 @@ if __name__ == "__main__":
 
     # different learning rates
     for lr in np.arange(0.1, 0.92, 0.1):
-        p = Perceptron(learning_rate=lr)
+        p = Perceptron(learning_rate=lr, activation=step)
         precision_training = np.array([])
         # train the perceptron
         for i in range(trainings):
