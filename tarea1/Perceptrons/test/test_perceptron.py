@@ -1,5 +1,5 @@
 from unittest import TestCase
-import numpy as np
+from utils import *
 
 from Perceptron import Perceptron
 from Perceptron import AndPerceptron
@@ -21,6 +21,15 @@ class TestPerceptron(TestCase):
         self.assertEqual(1., p2.feed([1., 0., 1.]))
         self.assertEqual(0., p2.feed([1., 1., 0.]))
         self.assertEqual(1., p2.feed([1., 1., 1.]))
+
+    def test_feed_sigmoid(self):
+        p1 = Perceptron(0., [1., 2., 3.], activation=sigmoid)
+        self.assertEqual(1., p1.feed([.5, .5, .5]))
+        self.assertEqual(1., p1.feed([0, 0, .1]))
+        self.assertEqual(1., p1.feed([0, 0, 0]))
+        self.assertEqual(0., p1.feed([-0.5, -0.5, -0.5]))
+        self.assertEqual(0., p1.feed([0, 0, -0.1]))
+        self.assertEqual(0., p1.feed([-0.1, 0, 0]))
 
     def test_feed_error(self):
         p = Perceptron(0., [1., 1.])

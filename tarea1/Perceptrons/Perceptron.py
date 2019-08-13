@@ -6,13 +6,14 @@ class Perceptron:
     """
     Perceptron class
     """
-    def __init__(self, bias=None, weights=None, activation=step, learning_rate=0.1, n_inputs=2):
+    def __init__(self, bias=None, weights=None, learning_rate=0.1, n_inputs=2, activation=step):
         """
         class constructor
         :param bias: bias of the perceptron
         :param weights: array of weights for the perceptron
         :param learning_rate: learning rate
         :param n_inputs: number of inputs
+        :param activation: activation function for the perceptron
         """
         self.bias = bias if bias is not None else np.random.uniform(-2., 2.)
         self.weights = weights if weights is not None else np.random.uniform(-2., 2., size=n_inputs)
