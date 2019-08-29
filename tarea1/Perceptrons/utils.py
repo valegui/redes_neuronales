@@ -41,13 +41,6 @@ def tanh(inputs, weights, bias):
 
 # --------- FOR TRAINING - EPOCHS -------- #
 
-#TO_BIN = lambda x : 0. if x<0.5 else 1.
-#NP_TO_BIN = np.vectorize(TO_BIN)
-
-#TO_BIN_TANH = lambda x : 0. if x<=0 else 1.
-#NP_TO_BIN_TANH = np.vectorize(TO_BIN_TANH)
-
-
 def epoch(NN, len_data, inputs, expected):
     """
     Computes an epoch for the neural network with the data and
@@ -84,7 +77,10 @@ def hits(NN, inputs, expected, len_data):
     tot = 0
     for input, expect in zip(inputs, expected):
         #got = NP_TO_BIN(NN.feed(np.asarray(input)))
-        got = NN.get_last_activation().to_bin(NN.feed(np.asarray(input)))
+        #got = NN.get_last_activation().to_bin(NN.feed(np.asarray(input)))
+        got_raw = NN.feed(np.asarray(input))
+        got = np.zeros(len(got_raw))
+        got[np.argmax(got_raw)] = 1
         hit += np.array_equal(got, np.asarray(expect))
         tot += 1
     assert tot == len_data, "Mismatched lenghts of testing inputs"
@@ -164,7 +160,9 @@ def confusion_matrix_(NN, hots, true, pred, plot=False):
     y_pred = []
     for t, p in zip(true, pred):
         c_t = get_class(t, hots)
-        c_p = get_class(NN.get_last_activation().to_bin(p), hots)
+        z = np.zeros(len(p))
+        z[np.argmax(p)] = 1
+        c_p = get_class(z, hots)
         if c_t and c_p:
             y_true.append(c_t)
             y_pred.append(c_p)

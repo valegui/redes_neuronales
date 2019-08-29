@@ -3,7 +3,7 @@ import numpy as np
 
 class Step:
     def apply(self, x):
-        return 0 if x < 0 else 1
+        return 0 if x <= 0 else 1
     
     def derivative(self, x):
         return 0
@@ -39,7 +39,7 @@ class Tanh:
         return 1 - self.apply(x)**2
 
     def derivate_output(self, x):
-        return 1. - x**2
+        return 1 - x**2
 
     def to_bin(self, x):
         return np.vectorize(lambda y: 0. if y <=0. else 1.)(x)

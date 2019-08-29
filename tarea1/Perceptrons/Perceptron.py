@@ -33,10 +33,9 @@ class Perceptron:
         try:
             assert len(self.weights) == len(input),\
                 f'Mismatched lengths: expected {len(self.weights)}, got {len(input)}'
-            #self.output = self.activation(np.array(input), self.weights, self.bias)
-            pre_out = self.activation.apply(np.dot(self.weights, np.array(input)) + self.bias)
-            #self.output = 0. if pre_out<0.5 else 1.
-            self.output = pre_out
+            assert np.issubdtype(np.asarray(input).dtype, np.number),\
+                "Input type not numeric"
+            self.output = self.activation.apply(np.dot(self.weights, np.array(input)) + self.bias)
             return self.output
         except AssertionError:
             print("feed: mismatched lengths")
@@ -71,9 +70,9 @@ class Perceptron:
         precision = np.array([])
         classification = np.array([])
         for ins, outs in zip(inputs, outputs):
-            pres, clas = self.learn(ins, outs)
+            pres, clas = self.train(ins, outs)
             precision = np.append(precision, pres)
-            classification = np.append(classification, clas)
+            classification = np.append(classification, self.activation.to_bin(clas))
         return precision, classification
 
     def adjust_bias(self):

@@ -185,10 +185,10 @@ class NeuronLayer:
         :param weights: new weights
         :return:
         """
-        assert len(weights) == len(self.neurons[0].get_weights()),\
-            "Lengths of weights does not match the number of weights per neuron"
-        for neuron in self.neurons:
-            neuron.set_weights(weights)
+        assert len(weights) == self.n ,\
+            "Lengths of weights does not match the number of neurons on the layer"
+        for neuron, weight in zip(self.neurons, weights):
+            neuron.set_weights(weight)
 
     def get_activation(self):
         """

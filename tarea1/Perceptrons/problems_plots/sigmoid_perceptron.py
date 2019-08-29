@@ -1,5 +1,6 @@
 from Perceptron import Perceptron
 from utils import *
+from Activation import Sigmoid
 
 
 def and_data():
@@ -52,15 +53,15 @@ if __name__ == "__main__":
                'NAND': nand_data}
     for key in op_data.keys():
         for lr in np.arange(0.1, 0.92, 0.1):
-            p = Perceptron(learning_rate=lr, activation=sigmoid)
+            p = Perceptron(learning_rate=lr, activation=Sigmoid())
             points, classification = op_data[key]()
             precision_training = np.array([])
             # train the perceptron
             for i in range(trainings):
-                local_precision, perceptron_out = p.learn_all(points, classification)
+                local_precision, perceptron_out = p.train_all(points, classification)
                 precision_training = np.append(precision_training, (q - np.count_nonzero(local_precision != 0)) / q)
             plot_precision(precision_training, learning_rate=lr)
-            #print(f'{key} para 1 y 0  = {p.feed([1, 0])}')
-            #print(f'{key} para 0 y 0  = {p.feed([0, 0])}')
-            #print(f'{key} para 1 y 1  = {p.feed([1, 1])}')
-            #print(f'{key} para 0 y 1  = {p.feed([0, 1])}')
+            print(f'{key} para 1 y 0  = {p.activation.to_bin(p.feed([1, 0]))}')
+            print(f'{key} para 0 y 0  = {p.activation.to_bin(p.feed([0, 0]))}')
+            print(f'{key} para 1 y 1  = {p.activation.to_bin(p.feed([1, 1]))}')
+            print(f'{key} para 0 y 1  = {p.activation.to_bin(p.feed([0, 1]))}')

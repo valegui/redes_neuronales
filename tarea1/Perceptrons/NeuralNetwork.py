@@ -17,6 +17,9 @@ class NeuralNetwork:
         :param n_capas: number of hidden layers
         :param o: number of outputs
         """
+        assert len(n_n_porcapa) == n_capas, \
+            "Wrong input for the Neural Network"
+
         layers = [NeuronLayer(n=n_n_porcapa[0], ni=f)]
 
         for n, ni in zip(n_n_porcapa[1:], n_n_porcapa):
@@ -55,6 +58,8 @@ class NeuralNetwork:
         """
         assert len(inputs) == self.f,\
             f'Mismatched lengths: expected {self.f}, got {len(inputs)}'
+        assert np.issubdtype(np.asarray(inputs).dtype, np.number),\
+            "Input type not numeric"
         return self.layers[0].feed(np.asarray(inputs))
 
     def train(self, inputs, expected):
@@ -69,7 +74,7 @@ class NeuralNetwork:
         self.backpropagate_error(np.asarray(expected))
         self.update_weights(inputs)
 
-        err = self.feed(inputs) - np.asarray(expected)
+        err = np.asarray(expected) - self.feed(inputs)
         return np.sum(err**2)
 
     def backpropagate_error(self, expected):

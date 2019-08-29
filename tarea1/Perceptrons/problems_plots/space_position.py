@@ -115,7 +115,7 @@ if __name__ == "__main__":
         precision_training = np.array([])
         # train the perceptron
         for i in range(trainings):
-            local_precision, perceptron_out = p.learn_all(points, classification)
+            local_precision, perceptron_out = p.train_all(points, classification)
             precision_training = np.append(precision_training, (q - np.count_nonzero(local_precision != 0)) / q)
             if plt_classification and (i == 0 or i == 20 or i == 50):
                 # plot the perceptron output (classification)
