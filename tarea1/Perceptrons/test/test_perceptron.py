@@ -85,9 +85,9 @@ class TestPerceptron(TestCase):
 
     def test_train_all(self):
         inputs = np.array([[-1., -1.],
-                  [-1., 1.],
-                  [-10, 10],
-                  [-1., 1]])
+                           [-1., 1.],
+                           [-10, 10],
+                           [-1., 1]])
         outputs = np.array([0., 1., 0., 1.])
         p = Perceptron(1., [1., 1.], .1)
         res1, res2 = p.train_all(inputs, outputs)
@@ -107,6 +107,36 @@ class TestPerceptron(TestCase):
         self.assertEqual(1.9, p.weights[0])
         self.assertEqual(.1, p.weights[1])
         self.assertEqual(1., p.bias)
+
+    def test_adjust_bias(self):
+        p = Perceptron(0.1, [0.2, 0.3], 0.5)
+        self.assertEqual(0.1, p.bias)
+        p.adjust_bias()
+        self.assertEqual(0.6, p.bias)
+        p.set_bias(10)
+        self.assertEqual(10, p.bias)
+
+    def test_delta(self):
+        p = Perceptron(0.1, [0.2, 0.3], 0.5)
+        self.assertEqual(1., p.get_delta())
+        p.adjust_delta(1)
+        self.assertEqual(0.0, p.get_delta())
+        p.set_delta(0.3)
+        self.assertEqual(0.3, p.get_delta())
+
+
+    def test_weight(self):
+        p = Perceptron(0.1, [0.2, 0.3], 0.5)
+        self.assertTrue(np.allclose(np.asarray([0.2, 0.3]), p.get_weights()))
+        p.set_weights(np.asarray([0.4, 0.5]))
+        self.assertTrue(np.allclose(np.asarray([0.4, 0.5]), p.get_weights()))
+        p.adjust_weight(np.asarray([2, 4]))
+        self.assertTrue(np.allclose(np.asarray([1.4, 2.5]), p.get_weights()))
+
+    def test_get_output(self):
+        p = Perceptron(0.1, [0.2, 0.3], 0.5)
+        self.assertEqual(0, p.get_output())
+
 
 
 class TestAndPerceptron(TestCase):

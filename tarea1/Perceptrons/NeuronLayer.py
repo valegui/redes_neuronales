@@ -33,6 +33,7 @@ class NeuronLayer:
         :param layer: new next layer
         :return:
         """
+        assert isinstance(layer, NeuronLayer), "Layer is not a NeuronLayer"
         self.next_layer = layer
 
     def set_prev_layer(self, layer):
@@ -41,6 +42,7 @@ class NeuronLayer:
         :param layer: new previous layer
         :return:
         """
+        assert isinstance(layer, NeuronLayer), "Layer is not a NeuronLayer"
         self.prev_layer = layer
 
     def get_outputs(self):
