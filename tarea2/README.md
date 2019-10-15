@@ -24,7 +24,7 @@ El problema elegido es **0-1 - Knapsack**. Se considera una mochila que aguanta 
 4. Caja de peso 1, valor 1.
 5. Caja de peso 4, valor 10.
 
-En este problema, solo se puede usar cada caja una vez.
+En esta variación knapsack solo se puede usar cada caja una vez.
 
 ### Modelado del problema
 Se considera que un **individuo** es un arreglo de largo **5** (o la cantidad de cajas que sean permitidas en el problema), que representa las cajas a llevar. Los **genes** son binarios, es decir son _1_ o _0_, que indican si la caja que tiene como número la posición en que se encuentra el gen se lleva o no en la mochila.
@@ -64,11 +64,11 @@ El algoritmo implementado puede ser útil para buscar resultados y optimizacione
 La dificultad puede estar en encontrar la forma de modelar el problema, tanto en la elección de individuos como en la creación de
 una función de fitness que se adecue al problema.
 
-Entre las aplicaciones del problema resuelto es la elección de tareas para hacer en un fin de semana (que tiene horas limitadas), considerando cuantas horas
-se estima que demoraría en realizarla, además de cuánto valor se le entrega a la tarea, teniendo en cuenta la nota necesaria para pasar.
+Una de las aplicaciones del problema resuelto es la elección de tareas para hacer en un fin de semana (que tiene horas limitadas), considerando cuantas horas
+se estima que demoraría en realizarla, además de cuánto valor se le entrega a la tarea, teniendo en cuenta la nota necesaria para pasar el ramo.
 
-La implementación aquí presentada puede ser mejorada en términos de optimización de código, por ejemplo la selección de padres para un offspring
-no es necesario que sea el doble del tamaño de la población, siendo reducible. Para cambiar esto sería necesario modificar el método de selección
+La implementación aquí presentada puede ser mejorada en términos de optimización de código, por ejemplo en la selección de padres para un offspring
+no es necesario que se elija dos veces el tamaño de la población en padres, pueden ser menos. Para cambiar esto sería necesario modificar el método de selección
 y de crossover.
 ### Comportamiento del algoritmo
 Se evalúa el comportamiento del algoritmo para el problema de secuencia de bits.
@@ -80,34 +80,37 @@ la secuencia esperada.
 Para la primera secuencia se observa que el mejor fitness para todas las generaciones nunca bajó de 2 bits de diferencia.
 En cuanto al fitness promedio, se observa una mejora gradual en el mismo, comenzando desde un valor cercano a -8 hasta llegar a uno cercano a -5.
 El cambio más drástico lo presenta la evolución del peor fitness por generación, esto porque el valor comienza muy bajo, con individuos casi
-completamente distintos a la secuencia esperada, que se corrige en menos de 5 generaciones, llegando a un valor bajo (-8), pero sigue siendo mejor
+completamente distintos a la secuencia esperada, lo cual se corrige en menos de 5 generaciones, llegando a un valor bajo (-8), pero sigue siendo mejor
 que un individuo completamente diferente.
 Puede considerarse que el peor valor de fitness es siempre muy bajo, lo que puede ser un problema en el proceso de selección, sin embargo el
-que existan puede ayudar al problema de que un algoritmo genético puede dominar una porción de individuos con buen fitness pero
-no óptimos. Esto provocaría una dificultad para llegar a la solución óptima. Estos valores también son explicados por la tasa de mutación
-elegida para el algoritmo que debe encontrar esta secuencia (0.2 -> 3 genes mutados).
+que existan puede ayudar al inconveniente de que en un algoritmo genético la población puede estar dominada por una porción de individuos con buen fitness pero
+que no son óptimos (esto provocaría una dificultad para llegar a la solución óptima). Estos valores también son explicados por la tasa de mutación
+elegida en el algoritmo que tiene como objetivo esta secuencia (0.2 -> 3 genes mutados).
 
 ![fit_gen_1](./analysis/fitness_generation_001010101101010.png)
 
-Para la segunda secuencia se observa que se llega a la solución en la segunda generación.
+Para la segunda secuencia se aprecia que se llega a la solución en la segunda generación.
 Por como evoluciona el promedio y peor fitness, se observa que el mejor fitness puede haber sido logrado porque se aprovecha tanto el crossover como
 la mutación de genes, ya que su pendiente es más grande que la de las otras curvas.
+
 ![fit_gen_2](./analysis/fitness_generation_011100000100011.png)
 
 #### Heatmap de configuraciones
-Se realiza el heatmap de configuraciones para la secuencia 001010101101010. Se observa que los mejores resultados se obtienen cuando se tiene un mutation rate igual o menor a 0.5.
+Se realiza el heatmap de configuraciones para la secuencia 001010101101010. Se observa que los mejores resultados se obtienen cuando se tiene un _mutation rate_ igual o menor a 0.5.
 Esto entendiendo como mejor resultado aquel en que el algoritmo llega a la respuesta correcta en menos de 60 iteraciones.
 Este resultado es esperable porque no se "deshace" todo el avance de un individuo seleccionado, ya que se cambian menos de la mitad de bits del mismo en cada generación.
 Dentro de los buenos resultados, se observa que los mejores se encuentran cuando la tasa de mutación es 0.0 o 0.1.
 Los mejores resultados se ven cuando las poblaciones son de tamaños entre 300 y 800 individuos.
 
 ![heat_conf_I](./analysis/heatmap_configurations_I_001010101101010.png)
+
 Se grafica un heatmap para la mejor fitness de la población luego de las 60 iteraciones.
 Los resultados aquí mostrados representan que tan malos fueron los "malos resultados".
 En estos se observa que el tener una tasa de mutación de 1.0 es malo, lo cual se explica con el hecho de que cambiar todos los genes de
-un individuo que se espera que tenga padres relativamente buenos, es malo para la convergencia del algoritmo.
+un individuo -que se espera que tenga padres relativamente buenos- es malo para la convergencia del algoritmo.
 Se muestra que en el aumento de la tasa de mutación, es más difícil llegar a un resultado óptimo. 
-De esta misma forma, con población más pequeña, el mejor fitness es más bajo que cuando se usa una población más grande.
+De esta misma forma, con una población más pequeña, el mejor fitness es más bajo que cuando se usa una población más grande.
+
 ![heat_conf_F](./analysis/heatmap_configurations_F_001010101101010.png)
 
 # Instaleichon y usaje
